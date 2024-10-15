@@ -57,7 +57,12 @@ stdenv.mkDerivation (finalAttrs: {
     if stdenv.isDarwin then
       ''
         cp -r pdf_viewer/shaders sioyek.app/Contents/MacOS/shaders
-        cp pdf_viewer/{prefs,prefs_user,keys,key_user}.config tutorial.pdf sioyek.app/Contents/MacOS/
+        cp pdf_viewer/{prefs,prefs_user,keys}.config tutorial.pdf sioyek.app/Contents/MacOS/
+
+        # Skip the key_user.config if it doesn't exist
+        if [ -f pdf_viewer/key_user.config ]; then
+            cp pdf_viewer/key_user.config sioyek.app/Contents/MacOS/
+        fi
 
         mkdir -p $out/Applications $out/bin
         cp -r sioyek.app $out/Applications
